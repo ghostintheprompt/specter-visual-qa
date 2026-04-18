@@ -1,3 +1,11 @@
+# Specter — ignore live capture artifacts; keep baselines and references
+screenshots/after/
+screenshots/diffs/
+screenshots/current_state/
+!screenshots/before/
+!references/
+.env
+
 # Logs
 logs
 *.log

@@ -1,16 +1,24 @@
 {
   "name": "specter-visual-qa",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Automated Visual Regression & AI-Polish Framework. Captures screenshots, diffs baselines, opens GitHub PRs — and runs a file-watcher so an AI assistant can iterate on your UI in real time.",
+  "main": "src/orchestrator.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "qa:run":       "node src/orchestrator.js",
+    "qa:capture":   "node flows/web/capture.js --output after",
+    "qa:diff":      "node src/differ.js",
+    "qa:watch":     "node src/watcher.js",
+    "qa:baseline":  "node -e \"const{DIRS}=require('./src/utils');const fs=require('fs'),path=require('path');fs.mkdirSync(DIRS.before,{recursive:true});fs.readdirSync(DIRS.after).filter(f=>f.endsWith('.png')).forEach(f=>{fs.copyFileSync(path.join(DIRS.after,f),path.join(DIRS.before,f));console.log('  ✅  Baseline set:',f);});console.log('\\n  Baseline updated from screenshots/after/\\n');\"",
+    "qa:clean":     "rm -rf screenshots/after/* screenshots/diffs/* screenshots/current_state/*",
+    "qa:clean:all": "rm -rf screenshots/after/* screenshots/diffs/* screenshots/current_state/* screenshots/before/*"
   },
-  "keywords": [],
+  "keywords": ["visual-regression", "playwright", "pixelmatch", "qa", "gitops"],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
+    "chokidar": "^5.0.0",
+    "dotenv": "^17.4.2",
     "pixelmatch": "^7.1.0",
     "playwright": "^1.59.1",
     "pngjs": "^7.0.0",

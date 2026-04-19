@@ -67,4 +67,4 @@ Spectral Cyclops is **local-only**. All screenshots are captured and processed o
 
 ## Footer
 Built by MDRN Corp — [mdrn.app](https://mdrn.app)  
-Read the full article: [Before the users do](https://ghostintheprompt.com/articles/before-the-users-do)
+Read the full article: [One Eye on Everything](https://ghostintheprompt.com/articles/spectral-cyclops)

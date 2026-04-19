@@ -112,7 +112,7 @@ function diffAll() {
 }
 
 if (require.main === module) {
-  console.log("\n🔬  Specter Diff Engine\n");
+  console.log("\n🔬  Spectral Cyclops Diff Engine\n");
   const results = diffAll();
   const changed = results.filter((r) => !r.skipped && r.mismatch > 0);
   console.log(`\n    ${changed.length} screen(s) with visual changes.\n`);

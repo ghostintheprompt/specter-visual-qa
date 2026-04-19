@@ -78,7 +78,7 @@ async function captureAll(outputKey = outputArg) {
       await page.goto(url, { waitUntil: "networkidle", timeout: 15_000 });
 
       // Optional: wait for a custom ready signal if the page sets it
-      // await page.waitForFunction(() => window.__specter_ready === true, { timeout: 5000 }).catch(() => {});
+      // await page.waitForFunction(() => window.__spectral_cyclops_ready === true, { timeout: 5000 }).catch(() => {});
 
       await page.screenshot({ path: outPath, fullPage: true });
       results.push({ route: route.name, path: outPath, ok: true });
@@ -108,7 +108,7 @@ async function captureAll(outputKey = outputArg) {
 
 if (require.main === module) {
   (async () => {
-    console.log(`\n🎬  Specter Capture Engine`);
+    console.log(`\n🎬  Spectral Cyclops Capture Engine`);
     console.log(`    Target:   ${BASE_URL}`);
     console.log(`    Output:   screenshots/${outputArg}/`);
     console.log(`    Routes:   ${ROUTES.map((r) => r.name).join(", ")}\n`);

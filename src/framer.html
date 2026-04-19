@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spectral Cyclops Pro-Framer Canvas</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --device-bg: #111;
+            --text-color: #ffffff;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 1284px;
+            height: 2778px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            overflow: hidden;
+        }
+
+        #title {
+            margin-top: 180px;
+            font-size: 84px;
+            font-weight: 800;
+            color: var(--text-color);
+            text-align: center;
+            width: 90%;
+            line-height: 1.1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Sleek CSS iPhone Frame */
+        #device-frame {
+            position: relative;
+            width: 1080px;
+            height: 2200px;
+            background: #000;
+            border-radius: 120px;
+            border: 12px solid #222;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.5);
+            margin-bottom: -100px; /* Slight cutoff for that "modern" look */
+            overflow: hidden;
+        }
+
+        #device-screen {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            background: #fff;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        #screenshot {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        /* Dynamic Island */
+        #island {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 70px;
+            background: #000;
+            border-radius: 40px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="logo-container" style="position: absolute; top: 40px; right: 40px; display: flex; align-items: center; gap: 15px;">
+        <img src="../public/icon.png" width="60" style="border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+        <span style="color: white; font-weight: 700; font-size: 24px; letter-spacing: 1px;">SPECTRAL CYCLOPS</span>
+    </div>
+    <div id="title">APP SCREEN TITLE</div>
+    
+    <div id="device-frame">
+        <div id="island"></div>
+        <div id="device-screen">
+            <img id="screenshot" src="" alt="Screenshot">
+        </div>
+    </div>
+
+    <script>
+        // Extract parameters from URL
+        const params = new URLSearchParams(window.location.search);
+        const title = params.get('title') || 'Beautiful Game Design';
+        const imageUrl = params.get('image');
+        const theme = params.get('theme') || 'purple';
+
+        document.getElementById('title').textContent = title;
+        if (imageUrl) {
+            document.getElementById('screenshot').src = imageUrl;
+        }
+
+        // Optional theme support
+        if (theme === 'dark') {
+            document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)');
+        } else if (theme === 'sunset') {
+            document.documentElement.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)');
+        }
+    </script>
+</body>
+</html>

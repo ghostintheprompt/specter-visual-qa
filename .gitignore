@@ -2,9 +2,11 @@
 screenshots/after/
 screenshots/diffs/
 screenshots/current_state/
+screenshots/framed/
 !screenshots/before/
 !references/
 .env
+projects/
 
 # Logs
 logs

@@ -1,11 +1,20 @@
 {
-  "name": "specter-visual-qa",
+  "name": "spectral-cyclops",
   "version": "1.0.0",
   "description": "Automated Visual Regression & AI-Polish Framework. Captures screenshots, diffs baselines, opens GitHub PRs — and runs a file-watcher so an AI assistant can iterate on your UI in real time.",
   "main": "src/orchestrator.js",
   "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghostintheprompt/spectral-cyclops"
+  },
   "scripts": {
+    "start":        "node index.js",
     "qa:run":       "node src/orchestrator.js",
+    "qa:import":    "node src/onboard.js",
+    "qa:discover":  "node src/discover.js",
+    "qa:frame":     "node src/framer.js",
+    "qa:release":   "node src/release.js",
     "qa:capture":   "node flows/web/capture.js --output after",
     "qa:diff":      "node src/differ.js",
     "qa:watch":     "node src/watcher.js",

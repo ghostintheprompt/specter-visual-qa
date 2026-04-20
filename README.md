@@ -1,15 +1,16 @@
-<p align="center">
-  <img src="public/icon.png" width="256" alt="Spectral Cyclops Icon">
-</p>
+<img src="public/icon.png" width="200" alt="Spectral Cyclops Icon">
 
-# 👁️ Spectral Cyclops
+# Spectral Cyclops
 
-**Professional Visual Regression & Automated App Store Screenshot Engine.**
+**Visual Regression & App Store Screenshot Engine — v1.0**
+
+Free. Open-source. No subscriptions. No telemetry. Built by [MDRN Corp](https://mdrn.app).
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Platform: Node.js](https://img.shields.io/badge/Platform-Node.js-green.svg)](https://nodejs.org)
 [![Release: v1.0.0](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/ghostintheprompt/spectral-cyclops/releases)
-[![User-Friendly: Yes](https://img.shields.io/badge/User--Friendly-Yes-brightgreen.svg)](#usage)
+
+---
 
 Spectral Cyclops automates the most tedious parts of app development: verifying visual integrity across updates and generating high-fidelity screenshots for App Store listings. It crawls your app, captures every screen, and frames them in professional device silhouettes with zero manual clicking.
 
@@ -65,6 +66,7 @@ While `npm start` is recommended, you can run individual modules:
 ## Privacy Statement
 Spectral Cyclops is **local-only**. All screenshots are captured and processed on your machine. No images or telemetry are ever uploaded to external servers, except for GitHub if you explicitly configure PR creation.
 
-## Footer
-Built by MDRN Corp — [mdrn.app](https://mdrn.app)  
+---
+
+Built by **MDRN Corp** — [mdrn.app](https://mdrn.app)  
 Read the full article: [One Eye on Everything](https://ghostintheprompt.com/articles/spectral-cyclops)

@@ -1,4 +1,6 @@
-<img src="public/icon.png" width="200" alt="Spectral Cyclops Icon">
+<p align="center">
+  <img src="public/icon.png" width="520" alt="Spectral Cyclops Icon">
+</p>
 
 # Spectral Cyclops
 

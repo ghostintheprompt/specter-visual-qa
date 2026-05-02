@@ -39,23 +39,33 @@ function diffScreen(name) {
   const imgBefore = PNG.sync.read(fs.readFileSync(beforePath));
   const imgAfter  = PNG.sync.read(fs.readFileSync(afterPath));
 
-  // If dimensions changed, pixelmatch requires them to match.
-  if (imgBefore.width !== imgAfter.width || imgBefore.height !== imgAfter.height) {
-    return {
-      name, mismatch: -1, diffPath, beforePath, afterPath, skipped: false,
-      reason: `size mismatch: before=${imgBefore.width}×${imgBefore.height} after=${imgAfter.width}×${imgAfter.height}`,
-    };
+  // Handle dimension mismatches by padding to the maximum dimensions
+  const maxWidth = Math.max(imgBefore.width, imgAfter.width);
+  const maxHeight = Math.max(imgBefore.height, imgAfter.height);
+
+  let dataBefore = imgBefore.data;
+  let dataAfter = imgAfter.data;
+
+  if (imgBefore.width !== maxWidth || imgBefore.height !== maxHeight) {
+    const paddedBefore = new PNG({ width: maxWidth, height: maxHeight });
+    PNG.bitblt(imgBefore, paddedBefore, 0, 0, imgBefore.width, imgBefore.height, 0, 0);
+    dataBefore = paddedBefore.data;
   }
 
-  const { width, height } = imgBefore;
-  const diffImg = new PNG({ width, height });
+  if (imgAfter.width !== maxWidth || imgAfter.height !== maxHeight) {
+    const paddedAfter = new PNG({ width: maxWidth, height: maxHeight });
+    PNG.bitblt(imgAfter, paddedAfter, 0, 0, imgAfter.width, imgAfter.height, 0, 0);
+    dataAfter = paddedAfter.data;
+  }
+
+  const diffImg = new PNG({ width: maxWidth, height: maxHeight });
 
   const mismatch = pixelmatch(
-    imgBefore.data,
-    imgAfter.data,
+    dataBefore,
+    dataAfter,
     diffImg.data,
-    width,
-    height,
+    maxWidth,
+    maxHeight,
     {
       threshold: 0.1,        // tolerance per channel (0–1); 0.1 catches real changes, ignores antialiasing
       includeAA: false,      // don't flag anti-aliased pixels

@@ -6,7 +6,7 @@
 
 const readline = require("readline");
 const shell = require("shelljs");
-const { label } = require("./src/utils");
+const { getTelemetry } = require("./src/utils");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,6 +19,14 @@ function question(query) {
 
 async function mainMenu() {
   console.clear();
+  console.log("\n  Gathering telemetry...\n");
+  const t = await getTelemetry();
+  
+  const serverStr = t.isRunning ? "✅ Online" : (t.targetUrl === "Not set" ? "⚠️ Not set" : "❌ Offline");
+  const baselineStr = t.baselineCount > 0 ? `✅ Set (${t.baselineCount} images)` : "⚠️ Missing";
+  const routesStr = t.routeCount > 0 ? `✅ ${t.routeCount} mapped` : "⚠️ None mapped";
+  
+  console.clear();
   console.log(`
   <p align="center">
     <img src="public/icon.png" width="60">
@@ -27,7 +35,15 @@ async function mainMenu() {
   👁️  SPECTRAL CYCLOPS — Command Center
   ──────────────────────────────────────────────────
   
-  1. 📥  Onboard a Project     (Clone & detect framework)
+  📊  DASHBOARD
+      • Target:    ${t.targetUrl} [${serverStr}]
+      • Project:   ${t.activeProject}
+      • Routes:    ${routesStr}
+      • Baseline:  ${baselineStr}
+      
+  ──────────────────────────────────────────────────
+  
+  1. 📥  Onboard a Project     (Clone & configure auto-setup)
   2. 🔍  Auto-Map Screens      (Crawl app for all routes)
   3. 📸  Generate Pro Shots    (Capture & Frame for App Store)
   4. 🔬  Run Visual Audit      (Full regression & PR pipeline)
@@ -43,15 +59,33 @@ async function mainMenu() {
       shell.exec("npm run qa:import", { stdio: "inherit" });
       break;
     case "2":
-      shell.exec("npm run qa:discover", { stdio: "inherit" });
+      if (!t.isRunning && t.targetUrl !== "Not set") {
+        console.log("\n  ✖  Cannot crawl: Server is offline. Please start it first.");
+      } else {
+        shell.exec("npm run qa:discover", { stdio: "inherit" });
+      }
       break;
     case "3":
-      console.log("\n🎬  Capturing raw shots...");
-      shell.exec("npm run qa:capture", { silent: false });
-      console.log("\n🖼️   Applying device frames...");
-      shell.exec("npm run qa:frame", { silent: false });
+      if (!t.isRunning && t.targetUrl !== "Not set") {
+        console.log("\n  ✖  Cannot capture: Server is offline. Please start it first.");
+      } else {
+        console.log("\n🎬  Capturing raw shots...");
+        shell.exec("npm run qa:capture", { silent: false });
+        console.log("\n🖼️   Applying device frames...");
+        shell.exec("npm run qa:frame", { silent: false });
+      }
       break;
     case "4":
+      if (t.baselineCount === 0) {
+         console.log("\n  ⚠️  No baseline detected. To run an audit, you need a baseline.");
+         const setBase = await question("      Set current screens as baseline now? (y/N): ");
+         if (setBase.toLowerCase() === 'y') {
+           shell.exec("npm run qa:baseline", { stdio: "inherit" });
+         } else {
+           console.log("      Skipping audit.");
+           break;
+         }
+      }
       shell.exec("npm run qa:run", { stdio: "inherit" });
       break;
     case "5":

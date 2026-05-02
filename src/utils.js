@@ -65,4 +65,68 @@ async function checkForUpdates() {
   }
 }
 
-module.exports = { DIRS, ROOT, ensureDirs, timestamp, label, checkForUpdates };
+/**
+ * Update the .env file with a key-value pair.
+ */
+function updateEnv(key, value) {
+  const envPath = path.join(ROOT, ".env");
+  let envContent = "";
+  if (fs.existsSync(envPath)) {
+    envContent = fs.readFileSync(envPath, "utf8");
+  }
+
+  const escapedValue = value.includes(" ") || value.includes("{") ? `'${value}'` : value;
+  const line = `${key}=${escapedValue}`;
+  const regex = new RegExp(`^${key}=.*$`, "m");
+
+  if (envContent.match(regex)) {
+    envContent = envContent.replace(regex, line);
+  } else {
+    envContent += `\n${line}\n`;
+  }
+
+  fs.writeFileSync(envPath, envContent.trim() + "\n");
+}
+
+/**
+ * Check if the target server is reachable.
+ */
+async function checkServerStatus(url) {
+  if (!url) return false;
+  try {
+    const res = await fetch(url, { method: "HEAD", signal: AbortSignal.timeout(2000) }).catch(() => fetch(url, { signal: AbortSignal.timeout(2000) }));
+    return res.ok || res.status < 500;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Gather telemetry data for the dashboard.
+ */
+async function getTelemetry() {
+  require("dotenv").config();
+  ensureDirs();
+  
+  const targetUrl = process.env.TARGET_URL || "Not set";
+  const isRunning = targetUrl !== "Not set" ? await checkServerStatus(targetUrl) : false;
+  
+  let routeCount = 0;
+  try {
+    if (process.env.ROUTES) {
+      routeCount = JSON.parse(process.env.ROUTES).length;
+    }
+  } catch {}
+
+  const baselineCount = fs.existsSync(DIRS.before) ? fs.readdirSync(DIRS.before).filter(f => f.endsWith(".png")).length : 0;
+  
+  let activeProject = "None";
+  if (fs.existsSync(DIRS.projects)) {
+    const projects = fs.readdirSync(DIRS.projects).filter(f => fs.statSync(path.join(DIRS.projects, f)).isDirectory());
+    if (projects.length > 0) activeProject = projects[0];
+  }
+
+  return { targetUrl, isRunning, routeCount, baselineCount, activeProject };
+}
+
+module.exports = { DIRS, ROOT, ensureDirs, timestamp, label, checkForUpdates, updateEnv, checkServerStatus, getTelemetry };

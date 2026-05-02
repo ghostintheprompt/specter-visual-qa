@@ -14,7 +14,7 @@ const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
-const { ROOT, label } = require("./utils");
+const { ROOT, label, checkServerStatus, updateEnv } = require("./utils");
 
 const BASE_URL = process.argv.includes("--url")
   ? process.argv[process.argv.indexOf("--url") + 1]
@@ -46,6 +46,13 @@ async function discover() {
   console.log(`\n🕵️  Spectral Cyclops Auto-Discovery Crawler`);
   console.log(`    Target:   ${BASE_URL}`);
   console.log(`    Limit:    ${MAX_PAGES} pages, depth ${MAX_DEPTH}\n`);
+
+  const isUp = await checkServerStatus(BASE_URL);
+  if (!isUp) {
+    console.log(`  ✖  Cannot reach ${BASE_URL}.`);
+    console.log(`     Please ensure your dev server is running before crawling.`);
+    process.exit(1);
+  }
 
   let browser;
   try {
@@ -120,22 +127,7 @@ async function discover() {
 
   const save = await question("\n💾  Save these routes to your .env? (y/N): ");
   if (save.toLowerCase() === "y") {
-    const envPath = path.join(ROOT, ".env");
-    let envContent = "";
-    if (fs.existsSync(envPath)) {
-      envContent = fs.readFileSync(envPath, "utf8");
-    }
-
-    const routesJson = JSON.stringify(routes);
-    const routesLine = `ROUTES=${routesJson}`;
-
-    if (envContent.includes("ROUTES=")) {
-      envContent = envContent.replace(/^ROUTES=.*$/m, routesLine);
-    } else {
-      envContent += `\n${routesLine}\n`;
-    }
-
-    fs.writeFileSync(envPath, envContent.trim() + "\n");
+    updateEnv("ROUTES", JSON.stringify(routes));
     console.log("\n✅  .env updated! You can now run: npm run qa:capture");
   } else {
     console.log("\n⏭️  Skipped .env update.");

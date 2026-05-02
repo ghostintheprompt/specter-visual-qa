@@ -12,7 +12,7 @@ const shell = require("shelljs");
 const path = require("path");
 const fs = require("fs");
 const readline = require("readline");
-const { DIRS, ensureDirs } = require("./utils");
+const { DIRS, ensureDirs, updateEnv } = require("./utils");
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -66,38 +66,41 @@ async function start() {
 
   console.log("\n🔍  Analyzing framework...");
   let framework = "Unknown";
-  let instructions = "";
+  let defaultPort = "3000";
 
   if (fs.existsSync(path.join(targetPath, "pubspec.yaml"))) {
     framework = "Flutter";
-    instructions = "    1. Run: cd projects/" + repoName + " && flutter run\n" +
-                   "    2. Set TARGET_URL in .env to match the Flutter dev server.\n" +
-                   "    3. Run: npm run qa:watch";
+    defaultPort = "8080";
   } else if (fs.existsSync(path.join(targetPath, "package.json"))) {
     const pkg = JSON.parse(fs.readFileSync(path.join(targetPath, "package.json"), "utf8"));
     const deps = { ...pkg.dependencies, ...pkg.devDependencies };
 
     if (deps["react-native"]) {
       framework = "React Native";
-      instructions = "    1. Run: cd projects/" + repoName + " && npm install && npm run start\n" +
-                     "    2. Set TARGET_URL to your emulator/device IP.\n" +
-                     "    3. Run: npm run qa:watch";
+      defaultPort = "8081";
     } else if (deps["next"] || deps["react"] || deps["vue"] || deps["svelte"]) {
       framework = "Web App (" + (deps["next"] ? "Next.js" : deps["react"] ? "React" : "Vue/Svelte") + ")";
-      instructions = "    1. Run: cd projects/" + repoName + " && npm install && npm run dev\n" +
-                     "    2. Set TARGET_URL to http://localhost:3000 (or your dev port).\n" +
-                     "    3. Run: npm run qa:watch";
+      defaultPort = deps["vite"] ? "5173" : (deps["next"] ? "3000" : "3000");
     }
   }
 
   console.log(`✨  Detected: ${framework}`);
+  
+  console.log("\n⚙️  Configuration");
+  const port = await question(`    What port does your dev server run on? [${defaultPort}]: `);
+  const finalPort = port.trim() || defaultPort;
+  const targetUrl = `http://localhost:${finalPort}`;
+  
+  updateEnv("TARGET_URL", targetUrl);
+  updateEnv("WATCH_DIR", `projects/${repoName}`);
+  
+  console.log(`\n✅  Automatically configured .env:`);
+  console.log(`      TARGET_URL = ${targetUrl}`);
+  console.log(`      WATCH_DIR  = projects/${repoName}`);
+
   console.log("\n🏁  Next Steps:");
-  if (instructions) {
-    console.log(instructions);
-  } else {
-    console.log("    1. Navigate to the project and start your dev server.");
-    console.log("    2. Update .env with the project's URL and WATCH_DIR.");
-  }
+  console.log(`    1. Open a new terminal and start your dev server in projects/${repoName}`);
+  console.log("    2. Return to the Command Center to Auto-Map Screens");
 
   console.log("\n🎉  Onboarding complete!\n");
   rl.close();

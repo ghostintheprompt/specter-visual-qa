@@ -21,7 +21,7 @@
 require("dotenv").config();
 const { chromium } = require("playwright");
 const path = require("path");
-const { DIRS, ensureDirs, label } = require("../../src/utils");
+const { DIRS, ensureDirs, label, checkServerStatus } = require("../../src/utils");
 
 // ── Config ─────────────────────────────────────────────────────────────────────
 
@@ -50,6 +50,13 @@ const outputArg = (() => {
 // ── Capture ───────────────────────────────────────────────────────────────────
 
 async function captureAll(outputKey = outputArg) {
+  const isUp = await checkServerStatus(BASE_URL);
+  if (!isUp) {
+    console.error(`\n  ✖  Cannot reach ${BASE_URL}.`);
+    console.error(`     Please ensure your dev server is running before capturing.\n`);
+    return [];
+  }
+
   const outputDir = DIRS[outputKey] || DIRS.after;
   ensureDirs();
 
@@ -77,8 +84,14 @@ async function captureAll(outputKey = outputArg) {
       console.log(`  📷  ${label(route.name)} → ${url}`);
       await page.goto(url, { waitUntil: "networkidle", timeout: 15_000 });
 
-      // Optional: wait for a custom ready signal if the page sets it
-      // await page.waitForFunction(() => window.__spectral_cyclops_ready === true, { timeout: 5000 }).catch(() => {});
+      // Optional: wait for a custom ready signal if configured
+      if (process.env.WAIT_FOR_READY_SIGNAL === "true") {
+        const readyTimeout = parseInt(process.env.READY_TIMEOUT || "5000", 10);
+        console.log(`  ⏳  Waiting up to ${readyTimeout}ms for window.__spectral_cyclops_ready...`);
+        await page.waitForFunction(() => window.__spectral_cyclops_ready === true, { timeout: readyTimeout }).catch(() => {
+          console.log(`  ⚠  Ready signal timed out, proceeding with capture.`);
+        });
+      }
 
       await page.screenshot({ path: outPath, fullPage: true });
       results.push({ route: route.name, path: outPath, ok: true });
@@ -114,6 +127,8 @@ if (require.main === module) {
     console.log(`    Routes:   ${ROUTES.map((r) => r.name).join(", ")}\n`);
 
     const results = await captureAll(outputArg);
+    if (results.length === 0) process.exit(1);
+    
     const ok  = results.filter((r) => r.ok).length;
     const bad = results.filter((r) => !r.ok).length;
 

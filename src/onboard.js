@@ -11,7 +11,7 @@ require("dotenv").config();
 const shell = require("shelljs");
 const path = require("path");
 const fs = require("fs");
-const readline = require("readline");
+const readline = require("readline/promises");
 const { DIRS, ensureDirs, updateEnv } = require("./utils");
 
 const rl = readline.createInterface({
@@ -19,14 +19,11 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-function question(query) {
-  return new Promise((resolve) => rl.question(query, resolve));
-}
 
 async function start() {
   console.log("\n🚀  Spectral Cyclops Repo Importer Wizard\n");
 
-  const repoUrl = await question("📋  Enter a GitHub URL (or path to local repo): ");
+  const repoUrl = await rl.question("📋  Enter a GitHub URL (or path to local repo): ");
   if (!repoUrl) {
     console.log("✖  No URL provided. Aborting.");
     process.exit(0);
@@ -44,7 +41,7 @@ async function start() {
 
   if (fs.existsSync(targetPath)) {
     console.log(`\n⚠️   Directory already exists: ${targetPath}`);
-    const overwrite = await question("    Overwrite? (y/N): ");
+    const overwrite = await rl.question("    Overwrite? (y/N): ");
     if (overwrite.toLowerCase() !== "y") {
       console.log("    Aborting.");
       process.exit(0);
@@ -87,7 +84,7 @@ async function start() {
   console.log(`✨  Detected: ${framework}`);
   
   console.log("\n⚙️  Configuration");
-  const port = await question(`    What port does your dev server run on? [${defaultPort}]: `);
+  const port = await rl.question(`    What port does your dev server run on? [${defaultPort}]: `);
   const finalPort = port.trim() || defaultPort;
   const targetUrl = `http://localhost:${finalPort}`;
   

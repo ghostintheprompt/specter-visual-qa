@@ -13,7 +13,7 @@ require("dotenv").config();
 const { chromium } = require("playwright");
 const fs = require("fs");
 const path = require("path");
-const readline = require("readline");
+const readline = require("readline/promises");
 const { ROOT, label, checkServerStatus, updateEnv } = require("./utils");
 
 const BASE_URL = process.argv.includes("--url")
@@ -28,9 +28,6 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-function question(query) {
-  return new Promise((resolve) => rl.question(query, resolve));
-}
 
 /** Generate a friendly filename from a URL path. */
 function nameFromPath(p) {
@@ -125,7 +122,7 @@ async function discover() {
   console.log(`\n✨  Discovered ${routes.length} routes:\n`);
   routes.forEach((r) => console.log(`    • ${label(r.name, 15)} → ${r.path}`));
 
-  const save = await question("\n💾  Save these routes to your .env? (y/N): ");
+  const save = await rl.question("\n💾  Save these routes to your .env? (y/N): ");
   if (save.toLowerCase() === "y") {
     updateEnv("ROUTES", JSON.stringify(routes));
     console.log("\n✅  .env updated! You can now run: npm run qa:capture");

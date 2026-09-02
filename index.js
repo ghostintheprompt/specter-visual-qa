@@ -4,7 +4,7 @@
  * The single entry point for the entire tool.
  */
 
-const readline = require("readline");
+const readline = require("readline/promises");
 const shell = require("shelljs");
 const { getTelemetry } = require("./src/utils");
 
@@ -13,9 +13,6 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-function question(query) {
-  return new Promise((resolve) => rl.question(query, resolve));
-}
 
 async function mainMenu() {
   console.clear();
@@ -52,7 +49,7 @@ async function mainMenu() {
   0. 👋  Exit
   `);
 
-  const choice = await question("  Select an option [0-5]: ");
+  const choice = await rl.question("  Select an option [0-5]: ");
 
   switch (choice) {
     case "1":
@@ -78,7 +75,7 @@ async function mainMenu() {
     case "4":
       if (t.baselineCount === 0) {
          console.log("\n  ⚠️  No baseline detected. To run an audit, you need a baseline.");
-         const setBase = await question("      Set current screens as baseline now? (y/N): ");
+         const setBase = await rl.question("      Set current screens as baseline now? (y/N): ");
          if (setBase.toLowerCase() === 'y') {
            shell.exec("npm run qa:baseline", { stdio: "inherit" });
          } else {
@@ -99,7 +96,7 @@ async function mainMenu() {
       break;
   }
 
-  await question("\n  Press Enter to return to menu...");
+  await rl.question("\n  Press Enter to return to menu...");
   mainMenu();
 }
 

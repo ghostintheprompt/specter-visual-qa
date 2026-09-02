@@ -13,7 +13,9 @@
 const fs   = require("fs");
 const path = require("path");
 const { PNG } = require("pngjs");
-const pixelmatch = require("pixelmatch");
+const pixelmatch = require("pixelmatch").default;
+// pixelmatch@7+ ships ESM-only (package.json "type": "module"); Node's CJS
+// interop puts the real function on .default, not on the module object itself.
 const { DIRS, ensureDirs, label } = require("./utils");
 
 /**

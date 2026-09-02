@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="public/icon.png" width="520" alt="Spectral Cyclops Icon">
+  <img src="public/icon.png" width="520" alt="Cyclops Icon">
 </p>
 
-# Spectral Cyclops
+# Cyclops
 
 **Visual Regression & App Store Screenshot Engine — v1.0**
 
@@ -10,11 +10,11 @@ Free. Open-source. No subscriptions. No telemetry. Built by [MDRN Corp](https://
 
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![Platform: Node.js](https://img.shields.io/badge/Platform-Node.js-green.svg)](https://nodejs.org)
-[![Release: v1.0.0](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/ghostintheprompt/spectral-cyclops/releases)
+[![Release: v1.0.0](https://img.shields.io/badge/Release-v1.0.0-orange.svg)](https://github.com/ghostintheprompt/cyclops/releases)
 
 ---
 
-Spectral Cyclops automates the most tedious parts of app development: verifying visual integrity across updates and generating high-fidelity screenshots for App Store listings. It crawls your app, captures every screen, and frames them in professional device silhouettes with zero manual clicking.
+Cyclops automates the most tedious parts of app development: verifying visual integrity across updates and generating high-fidelity screenshots for App Store listings. It crawls your app, captures every screen, and frames them in professional device silhouettes with zero manual clicking.
 
 | Feature | Description |
 |---------|-------------|
@@ -29,15 +29,15 @@ Spectral Cyclops automates the most tedious parts of app development: verifying 
 ## Installation
 
 ```bash
-git clone https://github.com/ghostintheprompt/spectral-cyclops
-cd spectral-cyclops
+git clone https://github.com/ghostintheprompt/cyclops
+cd cyclops
 npm install
 npx playwright install chromium
 ```
 
 ## Usage
 
-The easiest way to use Spectral Cyclops is through the interactive **Command Center**. Just run:
+The easiest way to use Cyclops is through the interactive **Command Center**. Just run:
 
 ```bash
 npm start
@@ -66,9 +66,9 @@ While `npm start` is recommended, you can run individual modules:
 ---
 
 ## Privacy Statement
-Spectral Cyclops is **local-only**. All screenshots are captured and processed on your machine. No images or telemetry are ever uploaded to external servers, except for GitHub if you explicitly configure PR creation.
+Cyclops is **local-only**. All screenshots are captured and processed on your machine. No images or telemetry are ever uploaded to external servers, except for GitHub if you explicitly configure PR creation.
 
 ---
 
 Built by **MDRN Corp** — [mdrn.app](https://mdrn.app)  
-Read the full article: [One Eye on Everything](https://ghostintheprompt.com/articles/spectral-cyclops)
+Read the full article: [One Eye on Everything](https://ghostintheprompt.com/articles/cyclops)

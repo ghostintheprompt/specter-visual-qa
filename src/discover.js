@@ -40,7 +40,7 @@ function nameFromPath(p) {
 }
 
 async function discover() {
-  console.log(`\n🕵️  Spectral Cyclops Auto-Discovery Crawler`);
+  console.log(`\n🕵️  Cyclops Auto-Discovery Crawler`);
   console.log(`    Target:   ${BASE_URL}`);
   console.log(`    Limit:    ${MAX_PAGES} pages, depth ${MAX_DEPTH}\n`);
 

@@ -3,8 +3,8 @@
 ## Quick Start
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/ghostintheprompt/spectral-cyclops
-   cd spectral-cyclops
+   git clone https://github.com/ghostintheprompt/cyclops
+   cd cyclops
    ```
 
 2. **Install dependencies**

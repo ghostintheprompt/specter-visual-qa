@@ -89,7 +89,7 @@ async function triggerCapture(changedFile) {
 function startWatcher() {
   ensureDirs();
 
-  console.log(`\n👁  Spectral Cyclops Auto-Polish Watcher`);
+  console.log(`\n👁  Cyclops Auto-Polish Watcher`);
   console.log(`    Watching: ${WATCH_DIR}`);
   console.log(`    Output:   screenshots/current_state/`);
   console.log(`    Debounce: ${DEBOUNCE_MS}ms after last save`);

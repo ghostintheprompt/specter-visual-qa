@@ -48,7 +48,7 @@ function label(text, width = 20) {
  */
 async function checkForUpdates() {
   const pkg = require("../package.json");
-  const repo = pkg.repository ? pkg.repository.url : "https://github.com/ghostintheprompt/spectral-cyclops";
+  const repo = pkg.repository ? pkg.repository.url : "https://github.com/ghostintheprompt/cyclops";
   const repoName = repo.split("github.com/")[1]?.replace(".git", "");
 
   if (!repoName) return;

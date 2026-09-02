@@ -87,8 +87,8 @@ async function captureAll(outputKey = outputArg) {
       // Optional: wait for a custom ready signal if configured
       if (process.env.WAIT_FOR_READY_SIGNAL === "true") {
         const readyTimeout = parseInt(process.env.READY_TIMEOUT || "5000", 10);
-        console.log(`  ⏳  Waiting up to ${readyTimeout}ms for window.__spectral_cyclops_ready...`);
-        await page.waitForFunction(() => window.__spectral_cyclops_ready === true, { timeout: readyTimeout }).catch(() => {
+        console.log(`  ⏳  Waiting up to ${readyTimeout}ms for window.__cyclops_ready...`);
+        await page.waitForFunction(() => window.__cyclops_ready === true, { timeout: readyTimeout }).catch(() => {
           console.log(`  ⚠  Ready signal timed out, proceeding with capture.`);
         });
       }
@@ -121,7 +121,7 @@ async function captureAll(outputKey = outputArg) {
 
 if (require.main === module) {
   (async () => {
-    console.log(`\n🎬  Spectral Cyclops Capture Engine`);
+    console.log(`\n🎬  Cyclops Capture Engine`);
     console.log(`    Target:   ${BASE_URL}`);
     console.log(`    Output:   screenshots/${outputArg}/`);
     console.log(`    Routes:   ${ROUTES.map((r) => r.name).join(", ")}\n`);

@@ -1,10 +1,10 @@
 /**
- * onboard.js — Spectral Cyclops Repo Importer Wizard
+ * onboard.js — Cyclops Repo Importer Wizard
  *
  * Automates onboarding of a new target repo:
  *  1. Clones the repo into projects/
  *  2. Detects the framework (Flutter, React, etc.)
- *  3. Scaffolds initial Spectral Cyclops configuration
+ *  3. Scaffolds initial Cyclops configuration
  */
 
 require("dotenv").config();
@@ -21,7 +21,7 @@ const rl = readline.createInterface({
 
 
 async function start() {
-  console.log("\n🚀  Spectral Cyclops Repo Importer Wizard\n");
+  console.log("\n🚀  Cyclops Repo Importer Wizard\n");
 
   const repoUrl = await rl.question("📋  Enter a GitHub URL (or path to local repo): ");
   if (!repoUrl) {

@@ -1,5 +1,5 @@
 /**
- * framer.js — Spectral Cyclops Pro-Framer
+ * framer.js — Cyclops Pro-Framer
  *
  * Takes raw screenshots from screenshots/after/ and wraps them in
  * device frames, gradients, and typography using a Playwright renderer.
@@ -29,7 +29,7 @@ function prettifyTitle(filename) {
 }
 
 async function runFramer() {
-  console.log("\n📸  Spectral Cyclops Pro-Framer — Generating App Store Shots\n");
+  console.log("\n📸  Cyclops Pro-Framer — Generating App Store Shots\n");
   ensureDirs();
 
   const files = fs.readdirSync(DIRS.after).filter((f) => f.endsWith(".png"));

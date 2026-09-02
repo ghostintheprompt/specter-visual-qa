@@ -1,12 +1,12 @@
 {
-  "name": "spectral-cyclops",
+  "name": "cyclops",
   "version": "1.0.0",
   "description": "Automated Visual Regression & AI-Polish Framework. Captures screenshots, diffs baselines, opens GitHub PRs — and runs a file-watcher so an AI assistant can iterate on your UI in real time.",
   "main": "src/orchestrator.js",
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ghostintheprompt/spectral-cyclops"
+    "url": "https://github.com/ghostintheprompt/cyclops"
   },
   "scripts": {
     "start":        "node index.js",

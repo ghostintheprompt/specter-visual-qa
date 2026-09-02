@@ -7,7 +7,7 @@
 const shell = require("shelljs");
 const pkg = require("./package.json");
 
-console.log(`\n🚀  Releasing Spectral Cyclops v${pkg.version}...\n`);
+console.log(`\n🚀  Releasing Cyclops v${pkg.version}...\n`);
 
 if (!shell.which("git")) {
   console.error("✖  Git not found.");
@@ -30,7 +30,7 @@ shell.exec("git push origin --tags");
 // 3. GitHub Release
 if (shell.which("gh")) {
   console.log("📦  Creating GitHub Release...");
-  shell.exec(`gh release create ${tag} --title "Spectral Cyclops ${tag}" --notes "MDRN Corp open-source release."`);
+  shell.exec(`gh release create ${tag} --title "Cyclops ${tag}" --notes "MDRN Corp open-source release."`);
 } else {
   console.log("⏭️   Skipping GitHub Release (gh CLI not found).");
 }

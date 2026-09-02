@@ -1,5 +1,5 @@
 /**
- * index.js — Spectral Cyclops Command Center
+ * index.js — Cyclops Command Center
  *
  * The single entry point for the entire tool.
  */
@@ -29,7 +29,7 @@ async function mainMenu() {
     <img src="public/icon.png" width="60">
   </p>
   
-  👁️  SPECTRAL CYCLOPS — Command Center
+  👁️  CYCLOPS — Command Center
   ──────────────────────────────────────────────────
   
   📊  DASHBOARD
